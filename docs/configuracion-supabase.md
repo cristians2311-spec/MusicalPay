@@ -11,18 +11,42 @@ Esta guía se ejecutará cuando exista el proyecto gratuito de Supabase. No cont
 
 ## 2. Google Auth
 
-Habilita Google como proveedor y registra estas URL:
+1. En Google Auth Platform crea un cliente OAuth de tipo **Aplicación web**.
+2. Configura la audiencia como externa, mantén la aplicación en modo de prueba y agrega `cristians2311@gmail.com` como usuario de prueba.
+3. Conserva únicamente los scopes `openid`, correo y perfil.
+4. En **Orígenes autorizados de JavaScript** registra:
 
-- Desarrollo: `http://localhost:3000/auth/callback`.
-- Producción: `https://DOMINIO-ASIGNADO/auth/callback`.
+- `http://localhost:3000`
+- `http://127.0.0.1:3000`
+
+5. En **URI de redireccionamiento autorizados** de Google registra el callback que muestra el proveedor Google dentro de Supabase. Para el proyecto alojado tendrá esta forma:
+
+- `https://REFERENCIA-DEL-PROYECTO.supabase.co/auth/v1/callback`
+
+6. En Supabase abre **Authentication → Providers → Google**, activa el proveedor y guarda el Client ID y Client Secret creados en Google.
+7. En **Authentication → URL Configuration** configura:
+
+- Site URL: `http://localhost:3000`
+- Redirect URL: `http://localhost:3000/auth/callback`
+- Redirect URL adicional: `http://127.0.0.1:3000/auth/callback`
+
+Cuando exista el dominio de producción, agrega también `https://DOMINIO-ASIGNADO/auth/callback` a la lista de Supabase. El callback de Google seguirá siendo el callback del proyecto Supabase.
 
 El registro público no forma parte del producto. El callback compara el correo autenticado con `AUTHORIZED_OWNER_EMAIL`; RLS exige además una fila activa en `app_users`.
 
 ## 3. Base de datos
 
-Aplica las migraciones en orden. Antes de producción se debe comprobar el esquema mediante una base local o temporal y ejecutar los asesores de seguridad y rendimiento.
+Aplica las migraciones en orden. La ruta recomendada es vincular la CLI y ejecutar:
 
-En este equipo no está disponible Docker, por lo que la migración aún no ha sido ejecutada localmente. Esa comprobación es una puerta obligatoria antes de conectar datos reales.
+```text
+npx supabase login
+npx supabase link --project-ref REFERENCIA-DEL-PROYECTO
+npx supabase db push
+```
+
+Antes de producción se debe comprobar el esquema mediante una base local o temporal y ejecutar los asesores de seguridad y rendimiento.
+
+En este equipo no está disponible Docker. Las migraciones se validan automáticamente en PostgreSQL embebido con `npm run test:migrations`; después de aplicarlas al proyecto alojado también se deben ejecutar los asesores de seguridad y rendimiento de Supabase.
 
 ## 4. Propietario inicial
 
