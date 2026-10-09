@@ -1,0 +1,33 @@
+# Dependencias y compilación
+node_modules/
+.next/
+out/
+coverage/
+playwright-report/
+test-results/
+.playwright-cli/
+output/
+
+# Configuración local y secretos
+.env
+.env.local
+.env.*.local
+!.env.example
+
+# Supabase local
+supabase/.branches/
+supabase/.temp/
+
+# Sistema y editores
+.DS_Store
+Thumbs.db
+*.log
+*.tsbuildinfo
+.idea/
+.vscode/
+
+# Respaldos y datos sensibles
+backups/
+*.dump
+*.backup
+
