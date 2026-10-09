@@ -24,8 +24,10 @@ Las credenciales privadas, respaldos y datos reales no deben entrar al repositor
 npm run lint
 npm run typecheck
 npm test
+npm run test:migrations
 npm run build
 ```
 
 La fuente de verdad funcional está en [docs/planeacion.md](docs/planeacion.md).
+La conexión inicial de Supabase está documentada en [docs/configuracion-supabase.md](docs/configuracion-supabase.md).
 
