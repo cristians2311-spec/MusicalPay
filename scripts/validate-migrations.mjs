@@ -23,6 +23,8 @@ const supabaseStubs = `
   language sql
   stable
   as $$ select null::uuid $$;
+  grant usage on schema auth to authenticated;
+  grant execute on function auth.uid() to authenticated;
 
   create schema storage;
   create table storage.buckets (
@@ -71,6 +73,58 @@ try {
       throw error;
     }
   }
+
+  // Ejecuta el primer flujo transaccional con el mismo rol que usa la aplicación.
+  await database.exec(`
+    insert into auth.users (id, email)
+    values ('00000000-0000-4000-8000-000000000001', 'owner@example.com');
+    insert into public.bands (id, name)
+    overriding system value
+    values (1, 'Cristian Santiago Music');
+    insert into public.app_users (user_id, band_id, role)
+    values ('00000000-0000-4000-8000-000000000001', 1, 'owner');
+    insert into public.clients (id, band_id, name, created_by)
+    overriding system value
+    values (1, 1, 'Cliente de prueba', '00000000-0000-4000-8000-000000000001');
+    create or replace function auth.uid()
+    returns uuid
+    language sql
+    stable
+    as $$ select '00000000-0000-4000-8000-000000000001'::uuid $$;
+  `);
+
+  try {
+    await database.exec("set role authenticated");
+    await database.query(`
+      select * from public.create_quote_draft(
+        1,
+        '2026-10-17'::date,
+        '2026-10-18T03:30:00Z'::timestamptz,
+        'Casa Campestre',
+        'Valledupar',
+        'Cumpleaños',
+        7::smallint,
+        '',
+        '',
+        '[{"name":"Tradicional","price_cop":1200000,"half_tanda_units":2,"break_minutes":0,"required_advance_cop":300000,"customer_conditions":""},{"name":"Ampliada","price_cop":1700000,"half_tanda_units":3,"break_minutes":15,"required_advance_cop":"","customer_conditions":""}]'::jsonb
+      )
+    `);
+  } finally {
+    await database.exec("reset role");
+  }
+
+  const draftResult = await database.query(`
+    select
+      (select count(*)::integer from public.quotes) as quotes,
+      (select count(*)::integer from public.quote_revisions) as revisions,
+      (select count(*)::integer from public.quote_options) as options
+  `);
+  assert(
+    draftResult.rows[0].quotes === 1 &&
+      draftResult.rows[0].revisions === 1 &&
+      draftResult.rows[0].options === 2,
+    "La creación transaccional de cotizaciones no produjo el borrador completo",
+  );
 
   const publicTables = await database.query(`
     select count(*)::integer as count

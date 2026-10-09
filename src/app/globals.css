@@ -868,6 +868,187 @@ a {
   gap: 16px;
 }
 
+.quote-create-page {
+  max-width: 1060px;
+  margin: 0 auto;
+}
+
+.quote-form,
+.option-stack {
+  display: grid;
+  gap: 18px;
+}
+
+.form-panel {
+  padding: clamp(20px, 4vw, 32px);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  background: rgb(255 255 255 / 90%);
+  box-shadow: var(--shadow-sm);
+}
+
+.form-section-heading--action {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 24px;
+}
+
+.step-number {
+  float: left;
+  margin-right: 10px;
+  color: #b0bacb;
+  font-family: var(--font-display);
+  font-size: 0.95rem;
+  font-weight: 600;
+}
+
+.form-grid {
+  display: grid;
+  gap: 16px;
+}
+
+.form-grid--two {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.form-grid--option {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.field-group {
+  display: grid;
+  align-content: start;
+  gap: 7px;
+}
+
+.field-group--wide {
+  grid-column: 1 / -1;
+}
+
+.quote-option {
+  padding: 20px;
+  border: 1px solid #dce4f1;
+  border-radius: 16px;
+  background: #f8faff;
+}
+
+.quote-option__heading {
+  display: flex;
+  min-height: 38px;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  color: var(--blue-dark);
+  font-size: 0.75rem;
+  font-weight: 850;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.money-preview {
+  color: var(--blue-dark);
+  font-size: 0.74rem;
+  font-weight: 750;
+}
+
+.sticky-form-actions {
+  position: sticky;
+  z-index: 10;
+  bottom: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 10px;
+  width: fit-content;
+  margin-left: auto;
+  padding: 9px;
+  border: 1px solid rgb(218 225 236 / 88%);
+  border-radius: 16px;
+  background: rgb(255 255 255 / 92%);
+  box-shadow: 0 18px 50px rgb(20 33 61 / 14%);
+  backdrop-filter: blur(18px);
+}
+
+.quote-list {
+  display: grid;
+  margin-top: 16px;
+}
+
+.quote-row {
+  display: grid;
+  grid-template-columns: 54px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 15px;
+  padding: 17px 2px;
+  border-bottom: 1px solid var(--line);
+}
+
+.quote-row:last-child {
+  border-bottom: 0;
+}
+
+.quote-row__date {
+  display: grid;
+  width: 54px;
+  height: 58px;
+  place-items: center;
+  align-content: center;
+  border: 1px solid #dae3f2;
+  border-radius: 14px;
+  background: #f7f9fd;
+}
+
+.quote-row__date strong {
+  font-family: var(--font-display);
+  font-size: 1.35rem;
+  line-height: 1;
+}
+
+.quote-row__date span {
+  margin-top: 3px;
+  color: var(--ink-faint);
+  font-size: 0.62rem;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.quote-row__body {
+  display: grid;
+  min-width: 0;
+  gap: 5px;
+}
+
+.quote-row__body > div {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+}
+
+.quote-row__body > span,
+.quote-row__body small {
+  overflow: hidden;
+  color: var(--ink-soft);
+  font-size: 0.78rem;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.status-chip {
+  padding: 4px 7px;
+  border-radius: 999px;
+  color: var(--ink-soft);
+  background: #eef1f5;
+  font-size: 0.62rem;
+  font-weight: 800;
+}
+
+.status-chip--draft { color: #66501e; background: #fbf2d8; }
+.status-chip--sent { color: #2455a5; background: #e5efff; }
+.status-chip--accepted { color: #146c54; background: #dff5ed; }
+.status-chip--rejected,
+.status-chip--cancelled { color: #8d3339; background: #fbe7e8; }
+
 .attention-zero {
   display: flex;
   align-items: center;
@@ -1036,6 +1217,10 @@ a {
   .directory-layout {
     grid-template-columns: 1fr;
   }
+
+  .form-grid--option {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
 }
 
 @media (max-width: 680px) {
@@ -1088,6 +1273,44 @@ a {
   }
 
   .record-row form {
+    grid-column: 2;
+  }
+
+  .form-grid--two,
+  .form-grid--option {
+    grid-template-columns: 1fr;
+  }
+
+  .form-section-heading--action {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .form-section-heading--action .secondary-button {
+    width: 100%;
+  }
+
+  .sticky-form-actions {
+    right: 12px;
+    bottom: calc(92px + env(safe-area-inset-bottom));
+    left: 12px;
+    width: auto;
+  }
+
+  .sticky-form-actions > * {
+    flex: 1;
+  }
+
+  .quote-row {
+    grid-template-columns: 48px minmax(0, 1fr);
+  }
+
+  .quote-row__date {
+    width: 48px;
+    height: 54px;
+  }
+
+  .quote-row > .text-link {
     grid-column: 2;
   }
 }
