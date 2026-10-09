@@ -12,7 +12,7 @@ Aplicación privada para administrar cotizaciones, eventos, músicos, cobros, pa
 
 1. Copia `.env.example` como `.env.local`.
 2. Completa la URL y la publishable key de Supabase.
-3. Define `AUTHORIZED_OWNER_EMAIL` con la cuenta de Google autorizada.
+3. Conserva `AUTHORIZED_OWNER_EMAIL=cristians2311@gmail.com`, la única cuenta autorizada.
 4. Instala dependencias con `npm install`.
 5. Ejecuta `npm run dev`.
 

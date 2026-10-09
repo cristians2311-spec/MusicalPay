@@ -1,20 +1,16 @@
 -- EJECUCIÓN MANUAL ÚNICA DESPUÉS DEL PRIMER LOGIN CON GOOGLE.
--- Sustituye el correo antes de ejecutar en el SQL Editor de Supabase.
+-- La cuenta autorizada debe haber iniciado sesión antes de ejecutar este bloque.
 -- El script se detiene si el usuario no existe o ya tiene un espacio de trabajo.
 
 do $$
 declare
-  owner_email text := 'REEMPLAZAR@EJEMPLO.COM';
+  owner_email text := 'cristians2311@gmail.com';
   owner_user_id uuid;
   owner_band_id bigint;
   owner_member_id bigint;
   default_formation_id bigint;
   accordion_role_id bigint;
 begin
-  if owner_email = 'REEMPLAZAR@EJEMPLO.COM' then
-    raise exception 'Reemplaza owner_email antes de ejecutar';
-  end if;
-
   select id into owner_user_id
   from auth.users
   where lower(email) = lower(owner_email);

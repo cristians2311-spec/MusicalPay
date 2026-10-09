@@ -6,7 +6,7 @@ Esta guía se ejecutará cuando exista el proyecto gratuito de Supabase. No cont
 
 1. Crea el proyecto de Supabase.
 2. Copia `.env.example` como `.env.local`.
-3. Completa la URL, la publishable key y el correo autorizado.
+3. Completa la URL y la publishable key. La única cuenta autorizada ya está definida como `cristians2311@gmail.com`.
 4. No utilices una secret key o `service_role` en variables `NEXT_PUBLIC_*`.
 
 ## 2. Google Auth
@@ -27,7 +27,7 @@ En este equipo no está disponible Docker, por lo que la migración aún no ha s
 ## 4. Propietario inicial
 
 1. Inicia sesión una vez con Google para que Supabase cree el usuario en `auth.users`.
-2. Sustituye el correo en `supabase/snippets/bootstrap_owner.sql`.
+2. Confirma que `supabase/snippets/bootstrap_owner.sql` usa `cristians2311@gmail.com`.
 3. Ejecuta el script una sola vez desde el SQL Editor.
 4. Cierra y vuelve a abrir la sesión.
 
