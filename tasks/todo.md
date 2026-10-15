@@ -34,7 +34,7 @@
 
 ## Fase 3: Eventos
 
-- [ ] **T9. Agenda y evento manual.** Crear eventos sin cotización y mostrar agenda por
+- [x] **T9. Agenda y evento manual.** Crear eventos sin cotización y mostrar agenda por
   fecha con estado operativo y financiero separados.
 - [ ] **T10. Asignaciones.** Aplicar la formación habitual, reemplazar músicos por
   presentación y evitar dobles asignaciones dentro del mismo evento.
@@ -47,7 +47,7 @@
   total cuando se cancele un evento con dinero recibido.
 - [ ] **T13. Gastos.** Registrar gastos únicamente dentro de un evento y reflejarlos en
   caja y utilidad.
-- [ ] **T14. Obligaciones.** Al realizar el evento, generar una deuda por músico según
+- [x] **T14. Obligaciones.** Al realizar el evento, generar una deuda por músico según
   su participación real y remuneración total acordada.
 - [ ] **T15. Pagos agrupados.** Registrar un pago total a un músico, distribuirlo entre
   varias obligaciones y admitir pagos parciales.
@@ -61,7 +61,7 @@
 
 - [ ] **T16. Inicio y avisos.** Mostrar próximos eventos, valor contratado, cobros,
   pagos y gastos pendientes; avisar una vez al día por saldos posteriores al evento.
-- [ ] **T17. Estadísticas y reporte.** Filtrar por mes y generar el reporte por músico
+- [x] **T17. Estadísticas y reporte.** Filtrar por mes y generar el reporte por músico
   con cantidad de eventos y valor contratado.
 - [ ] **T18. Auditoría y documentos.** Registrar operaciones sensibles y conservar PDFs
   en almacenamiento privado con validación.
