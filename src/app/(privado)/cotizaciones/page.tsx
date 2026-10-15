@@ -69,7 +69,7 @@ export default async function QuotesPage({ searchParams }: { searchParams: Promi
                 <article className="quote-row" key={quote.id}>
                   <div className="quote-row__date"><strong>{revision ? new Intl.DateTimeFormat("es-CO", { day: "2-digit" }).format(new Date(`${revision.event_date}T12:00:00`)) : "—"}</strong><span>{revision ? new Intl.DateTimeFormat("es-CO", { month: "short" }).format(new Date(`${revision.event_date}T12:00:00`)).replace(".", "") : ""}</span></div>
                   <div className="quote-row__body"><div><strong>{clientNames.get(quote.client_id) ?? "Cliente"}</strong><span className={`status-chip status-chip--${quote.status}`}>{statusLabels[quote.status] ?? quote.status}</span></div><span>{revision?.occasion ?? "Sin ocasión"} · {revision?.venue ?? "Sin lugar"}</span><small>{revisionOptions.length} {revisionOptions.length === 1 ? "opción" : "opciones"}{lowestPrice !== null ? ` · Desde ${formatCop(lowestPrice)}` : ""}</small></div>
-                  <span className="text-link">Ver <Icon name="arrow-right" size={16} /></span>
+                  <Link className="text-link" href={`/cotizaciones/${quote.id}`}>Ver <Icon name="arrow-right" size={16} /></Link>
                 </article>
               );
             })}
