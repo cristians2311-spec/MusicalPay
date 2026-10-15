@@ -4,7 +4,7 @@
 
 - [x] **T1. Catálogo de músicos.** Crear, listar, asignar uno o varios roles y archivar
   músicos; validar nombre, teléfono y pertenencia de los roles a la agrupación.
-- [ ] **T2. Roles configurables.** Crear, ordenar, activar y desactivar roles sin
+- [x] **T2. Roles configurables.** Crear, ordenar, activar y desactivar roles sin
   eliminar los que ya tengan historial.
 - [ ] **T3. Formación habitual.** Elegir un músico sugerido por rol y conservar una
   sola formación predeterminada activa.
