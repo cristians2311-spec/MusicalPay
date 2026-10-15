@@ -9,20 +9,6 @@ export const metadata: Metadata = { title: "Iniciar sesión" };
 export default function LoginPage() {
   return (
     <main className="login-page">
-      <section className="login-story" aria-label="Presentación de MusicalPay">
-        <div className="login-story__content">
-          <span className="eyebrow eyebrow--light">Gestión musical, en un solo lugar</span>
-          <h1>Cada presentación clara. Cada pago en su lugar.</h1>
-          <p>
-            Organiza cotizaciones, eventos y pagos de Cristian Santiago Music sin
-            volver a cruzar notas, chats y hojas de cálculo.
-          </p>
-        </div>
-        <div className="rhythm-lines" aria-hidden="true">
-          <i /><i /><i /><i /><i />
-        </div>
-      </section>
-
       <section className="login-panel">
         <div className="login-panel__inner">
           <Brand />
