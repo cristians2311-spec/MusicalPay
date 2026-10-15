@@ -45,7 +45,7 @@
 
 - [ ] **T12. Cobros y devoluciones.** Registrar abonos, saldo del cliente y devolución
   total cuando se cancele un evento con dinero recibido.
-- [ ] **T13. Gastos.** Registrar gastos únicamente dentro de un evento y reflejarlos en
+- [x] **T13. Gastos.** Registrar gastos únicamente dentro de un evento y reflejarlos en
   caja y utilidad.
 - [x] **T14. Obligaciones.** Al realizar el evento, generar una deuda por músico según
   su participación real y remuneración total acordada.

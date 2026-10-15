@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import { Icon } from "@/components/ui/icon";
 import { ParticipationForm } from "@/features/events/components/participation-form";
 import { markEventPerformedAction } from "@/features/events/participation-actions";
+import { ExpenseForm } from "@/features/expenses/components/expense-form";
 import { formatCop } from "@/features/quotes/domain";
 import { findOwnerContext } from "@/lib/auth/owner-context";
 import { createClient } from "@/lib/supabase/server";
@@ -16,17 +17,21 @@ export default async function EventDetailPage({ params }: { params: Promise<{ id
   const supabase = await createClient();
   const { data: event } = await supabase.from("events").select("id,event_number,client_id,occasion,agreed_price_cop,operational_status,event_date,starts_at,half_tanda_units,venue,address").eq("id", eventId).eq("band_id", ownerResult.context.bandId).maybeSingle();
   if (!event) notFound();
-  const [{ data: client }, { data: participations }, { data: members }, { data: memberRoles }, { data: roles }] = await Promise.all([
+  const [{ data: client }, { data: participations }, { data: members }, { data: memberRoles }, { data: roles }, { data: expenses }, { data: expenseCategories }] = await Promise.all([
     supabase.from("clients").select("name,phone").eq("id", event.client_id).eq("band_id", ownerResult.context.bandId).single(),
     supabase.from("event_participations").select("id,member_id,agreed_fee_cop,participation_status").eq("event_id", eventId).eq("band_id", ownerResult.context.bandId).order("id"),
     supabase.from("members").select("id,name").eq("band_id", ownerResult.context.bandId).eq("is_active", true).is("archived_at", null).order("name"),
     supabase.from("member_roles").select("member_id,role_id").eq("band_id", ownerResult.context.bandId),
     supabase.from("roles").select("id,name").eq("band_id", ownerResult.context.bandId).eq("is_active", true).order("sort_order").order("name"),
+    supabase.from("event_expenses").select("id,category_id,description,payee_name,actual_amount_cop,expense_date").eq("event_id", eventId).eq("band_id", ownerResult.context.bandId).order("expense_date", { ascending: false }),
+    supabase.from("expense_categories").select("id,name").eq("band_id", ownerResult.context.bandId).eq("is_active", true).order("sort_order").order("name"),
   ]);
   const roleMap = new Map((roles ?? []).map((role) => [role.id, role.name]));
   const memberOptions = (members ?? []).map((member) => ({ id: member.id, name: member.name, roles: (memberRoles ?? []).filter((assignment) => assignment.member_id === member.id).flatMap((assignment) => { const name = roleMap.get(assignment.role_id); return name ? [{ id: assignment.role_id, name }] : []; }) })).filter((member) => member.roles.length > 0);
   const memberNames = new Map((members ?? []).map((member) => [member.id, member.name]));
   const editable = event.operational_status !== "performed" && event.operational_status !== "cancelled";
+  const categoryNames = new Map((expenseCategories ?? []).map((category) => [category.id, category.name]));
+  const expenseTotal = (expenses ?? []).reduce((sum, expense) => sum + (expense.actual_amount_cop ?? 0), 0);
   return (
     <div className="page-stack">
       <section className="page-heading"><div><span className="eyebrow">EV-{String(event.event_number).padStart(4, "0")}</span><h1>{event.occasion}</h1><p>{client?.name ?? "Cliente"} · {event.event_date} · {event.venue}</p></div><Link className="text-link" href="/eventos">Volver</Link></section>
@@ -36,6 +41,8 @@ export default async function EventDetailPage({ params }: { params: Promise<{ id
         {participations?.length ? <div className="record-list">{participations.map((participation) => <article className="record-row" key={participation.id}><div className="record-avatar"><Icon name="users" size={18} /></div><div className="record-row__body"><strong>{memberNames.get(participation.member_id) ?? "Músico"}</strong><span>{formatCop(participation.agreed_fee_cop)}</span><small>{participation.participation_status === "performed" ? "Participación realizada" : "Asignado"}</small></div></article>)}</div> : <p>Aún no has asignado músicos a este evento.</p>}
       </article>
       {editable ? <article className="form-panel"><div className="form-section-heading"><span className="eyebrow">Asignación</span><h2>Agregar músico</h2><p>El valor corresponde solamente a esta presentación.</p></div><ParticipationForm eventId={eventId} members={memberOptions} /></article> : null}
+      <article className="content-card"><div className="section-heading"><div><span className="eyebrow">Gastos del evento</span><h2>{formatCop(expenseTotal)}</h2></div></div>{expenses?.length ? <div className="record-list">{expenses.map((expense) => <article className="record-row" key={expense.id}><div className="record-avatar"><Icon name="wallet" size={18} /></div><div className="record-row__body"><strong>{expense.description} · {formatCop(expense.actual_amount_cop ?? 0)}</strong><span>{expense.payee_name}</span><small>{categoryNames.get(expense.category_id) ?? "Gasto"} · {expense.expense_date}</small></div></article>)}</div> : <p>Aún no hay gastos registrados.</p>}</article>
+      {event.operational_status !== "cancelled" ? <article className="form-panel"><div className="form-section-heading"><span className="eyebrow">Salida de dinero</span><h2>Registrar gasto</h2><p>Todo gasto queda asociado exclusivamente a este evento.</p></div><ExpenseForm categories={expenseCategories ?? []} defaultDate={event.event_date} eventId={eventId} /></article> : null}
       {editable ? <form action={markEventPerformedAction}><input name="eventId" type="hidden" value={eventId} /><button className="primary-button" disabled={!participations?.length} type="submit">Marcar evento como realizado</button></form> : null}
     </div>
   );
