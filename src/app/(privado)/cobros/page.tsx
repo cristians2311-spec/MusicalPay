@@ -13,7 +13,7 @@ export default async function CollectionsPage({ searchParams }: { searchParams: 
   const supabase = await createClient();
   const [{ data: collections, error }, { data: events }] = await Promise.all([
     supabase.from("collections").select("id,event_id,collection_number,amount_cop,received_on,payment_method_id,reference").eq("band_id", ownerResult.context.bandId).order("received_on", { ascending: false }).order("id", { ascending: false }),
-    supabase.from("events").select("id,event_number,client_id,occasion,agreed_price_cop").eq("band_id", ownerResult.context.bandId),
+    supabase.from("events").select("id,event_number,client_id,occasion,agreed_price_cop").eq("band_id", ownerResult.context.bandId).neq("operational_status", "cancelled"),
   ]);
   const clientIds = [...new Set((events ?? []).map((event) => event.client_id))];
   const methodIds = [...new Set((collections ?? []).map((collection) => collection.payment_method_id))];

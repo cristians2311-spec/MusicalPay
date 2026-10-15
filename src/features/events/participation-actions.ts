@@ -56,3 +56,17 @@ export async function markEventPerformedAction(formData: FormData) {
   revalidatePath("/eventos");
   revalidatePath("/pagos");
 }
+
+export async function cancelEventAction(formData: FormData) {
+  const eventId = Number(formData.get("eventId"));
+  const reason = String(formData.get("reason") ?? "").trim();
+  if (!Number.isSafeInteger(eventId) || eventId <= 0 || reason.length < 3 || reason.length > 500) return;
+  await requireOwnerContext();
+  const supabase = await createClient();
+  const { error } = await supabase.rpc("cancel_event", { requested_event_id: eventId, requested_reason: reason });
+  if (error) throw new Error("No fue posible cancelar el evento.");
+  revalidatePath(`/eventos/${eventId}`);
+  revalidatePath("/eventos");
+  revalidatePath("/cobros");
+  revalidatePath("/inicio");
+}

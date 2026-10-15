@@ -43,7 +43,7 @@
 
 ## Fase 4: Finanzas
 
-- [ ] **T12. Cobros y devoluciones.** Registrar abonos, saldo del cliente y devolución
+- [x] **T12. Cobros y devoluciones.** Registrar abonos, saldo del cliente y devolución
   total cuando se cancele un evento con dinero recibido.
 - [x] **T13. Gastos.** Registrar gastos únicamente dentro de un evento y reflejarlos en
   caja y utilidad.

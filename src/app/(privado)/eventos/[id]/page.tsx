@@ -3,7 +3,7 @@ import { notFound } from "next/navigation";
 
 import { Icon } from "@/components/ui/icon";
 import { ParticipationForm } from "@/features/events/components/participation-form";
-import { markEventPerformedAction } from "@/features/events/participation-actions";
+import { cancelEventAction, markEventPerformedAction } from "@/features/events/participation-actions";
 import { ExpenseForm } from "@/features/expenses/components/expense-form";
 import { formatCop } from "@/features/quotes/domain";
 import { findOwnerContext } from "@/lib/auth/owner-context";
@@ -27,7 +27,8 @@ export default async function EventDetailPage({ params }: { params: Promise<{ id
     supabase.from("expense_categories").select("id,name").eq("band_id", ownerResult.context.bandId).eq("is_active", true).order("sort_order").order("name"),
   ]);
   const roleMap = new Map((roles ?? []).map((role) => [role.id, role.name]));
-  const memberOptions = (members ?? []).map((member) => ({ id: member.id, name: member.name, roles: (memberRoles ?? []).filter((assignment) => assignment.member_id === member.id).flatMap((assignment) => { const name = roleMap.get(assignment.role_id); return name ? [{ id: assignment.role_id, name }] : []; }) })).filter((member) => member.roles.length > 0);
+  const assignedMemberIds = new Set((participations ?? []).map((participation) => participation.member_id));
+  const memberOptions = (members ?? []).filter((member) => !assignedMemberIds.has(member.id)).map((member) => ({ id: member.id, name: member.name, roles: (memberRoles ?? []).filter((assignment) => assignment.member_id === member.id).flatMap((assignment) => { const name = roleMap.get(assignment.role_id); return name ? [{ id: assignment.role_id, name }] : []; }) })).filter((member) => member.roles.length > 0);
   const memberNames = new Map((members ?? []).map((member) => [member.id, member.name]));
   const editable = event.operational_status !== "performed" && event.operational_status !== "cancelled";
   const categoryNames = new Map((expenseCategories ?? []).map((category) => [category.id, category.name]));
@@ -44,6 +45,7 @@ export default async function EventDetailPage({ params }: { params: Promise<{ id
       <article className="content-card"><div className="section-heading"><div><span className="eyebrow">Gastos del evento</span><h2>{formatCop(expenseTotal)}</h2></div></div>{expenses?.length ? <div className="record-list">{expenses.map((expense) => <article className="record-row" key={expense.id}><div className="record-avatar"><Icon name="wallet" size={18} /></div><div className="record-row__body"><strong>{expense.description} · {formatCop(expense.actual_amount_cop ?? 0)}</strong><span>{expense.payee_name}</span><small>{categoryNames.get(expense.category_id) ?? "Gasto"} · {expense.expense_date}</small></div></article>)}</div> : <p>Aún no hay gastos registrados.</p>}</article>
       {event.operational_status !== "cancelled" ? <article className="form-panel"><div className="form-section-heading"><span className="eyebrow">Salida de dinero</span><h2>Registrar gasto</h2><p>Todo gasto queda asociado exclusivamente a este evento.</p></div><ExpenseForm categories={expenseCategories ?? []} defaultDate={event.event_date} eventId={eventId} /></article> : null}
       {editable ? <form action={markEventPerformedAction}><input name="eventId" type="hidden" value={eventId} /><button className="primary-button" disabled={!participations?.length} type="submit">Marcar evento como realizado</button></form> : null}
+      {editable ? <form action={cancelEventAction} className="form-panel"><div className="form-section-heading"><span className="eyebrow">Cancelación</span><h2>Cancelar evento</h2><p>Se registrará la devolución total de todos los cobros recibidos.</p></div><input name="eventId" type="hidden" value={eventId} /><label className="field-group"><span className="field-label">Motivo *</span><input className="text-field" maxLength={500} minLength={3} name="reason" required /></label><div><button className="secondary-button" type="submit">Cancelar evento y registrar devolución</button></div></form> : null}
     </div>
   );
 }
