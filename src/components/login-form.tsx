@@ -22,6 +22,10 @@ export function LoginForm({ configured }: LoginFormProps) {
         provider: "google",
         options: {
           redirectTo: `${window.location.origin}/auth/callback`,
+          scopes: "openid",
+          queryParams: {
+            prompt: "select_account",
+          },
         },
       });
 

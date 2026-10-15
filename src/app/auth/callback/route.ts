@@ -4,6 +4,13 @@ import { hasSupabaseConfig } from "@/lib/env";
 import { getAuthorizedOwnerEmail } from "@/lib/server-env";
 import { createClient } from "@/lib/supabase/server";
 
+function getOAuthFailureUrl(request: NextRequest, reason: string) {
+  const url = new URL("/iniciar-sesion", request.url);
+  url.searchParams.set("error", "oauth");
+  url.searchParams.set("motivo", reason);
+  return url;
+}
+
 export async function GET(request: NextRequest) {
   if (!hasSupabaseConfig()) {
     return NextResponse.redirect(new URL("/iniciar-sesion?estado=sin-configurar", request.url));
@@ -11,13 +18,21 @@ export async function GET(request: NextRequest) {
 
   const code = request.nextUrl.searchParams.get("code");
   if (!code) {
-    return NextResponse.redirect(new URL("/iniciar-sesion?error=oauth", request.url));
+    const providerError =
+      request.nextUrl.searchParams.get("error_code") ??
+      request.nextUrl.searchParams.get("error") ??
+      "missing_code";
+    return NextResponse.redirect(getOAuthFailureUrl(request, providerError));
   }
 
   const supabase = await createClient();
   const { error } = await supabase.auth.exchangeCodeForSession(code);
   if (error) {
-    return NextResponse.redirect(new URL("/iniciar-sesion?error=oauth", request.url));
+    const reason =
+      error.code ?? (error.message === "fetch failed" ? "network" : "exchange_failed");
+    return NextResponse.redirect(
+      getOAuthFailureUrl(request, reason),
+    );
   }
 
   const {
