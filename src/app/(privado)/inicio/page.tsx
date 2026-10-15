@@ -11,27 +11,39 @@ const money = new Intl.NumberFormat("es-CO", {
 export default function HomePage() {
   return (
     <div className="page-stack">
-      <section className="page-heading">
-        <div>
-          <span className="eyebrow">Jueves, 9 de octubre</span>
-          <h1>Tu operación, al día.</h1>
-          <p>Aquí aparecerá lo que requiere tu atención hoy.</p>
+      <section className="home-intro">
+        <div className="home-intro__copy">
+          <span className="eyebrow">Centro de operación</span>
+          <h1>
+            Tu música en escena.
+            <br />
+            Tus cuentas en orden.
+          </h1>
+          <p>Controla cotizaciones, agenda y pagos desde un solo lugar.</p>
         </div>
-        <Link className="primary-button" href="/cotizaciones/nueva">
-          <Icon name="file" size={18} /> Nueva cotización
-        </Link>
+        <div className="home-intro__action">
+          <span>Siguiente paso</span>
+          <strong>Prepara una propuesta profesional para tu próximo cliente.</strong>
+          <Link className="primary-button" href="/cotizaciones/nueva">
+            <Icon name="file" size={18} /> Nueva cotización
+          </Link>
+        </div>
       </section>
 
       <section className="metric-grid" aria-label="Resumen del mes">
-        <article className="metric-card metric-card--primary">
-          <span>Eventos realizados</span>
-          <strong>0</strong>
-          <small>Octubre</small>
+        <article className="metric-card">
+          <span>Eventos este mes</span>
+          <div>
+            <strong>0</strong>
+            <small>realizados</small>
+          </div>
         </article>
         <article className="metric-card">
           <span>Valor contratado</span>
-          <strong>{money.format(0)}</strong>
-          <small>En eventos realizados</small>
+          <div>
+            <strong>{money.format(0)}</strong>
+            <small>en eventos realizados</small>
+          </div>
         </article>
       </section>
 
@@ -48,11 +60,11 @@ export default function HomePage() {
             <span className="empty-state__icon"><Icon name="calendar" size={24} /></span>
             <h3>Tu agenda está lista</h3>
             <p>Agrega el primer evento o acepta una cotización para verlo aquí.</p>
-            <Link className="secondary-button" href="/eventos/nuevo">Crear evento</Link>
+            <Link className="secondary-button" href="/eventos">Ir a eventos</Link>
           </div>
         </article>
 
-        <article className="content-card">
+        <article className="content-card" id="pendientes">
           <div className="section-heading">
             <div>
               <span className="eyebrow">Por revisar</span>

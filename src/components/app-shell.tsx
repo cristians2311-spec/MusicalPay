@@ -9,6 +9,13 @@ type AppShellProps = {
 };
 
 export function AppShell({ children }: AppShellProps) {
+  const today = new Intl.DateTimeFormat("es-CO", {
+    weekday: "long",
+    day: "numeric",
+    month: "long",
+    timeZone: "America/Bogota",
+  }).format(new Date());
+
   return (
     <div className="app-shell">
       <aside className="app-sidebar">
@@ -22,13 +29,23 @@ export function AppShell({ children }: AppShellProps) {
 
       <div className="app-stage">
         <header className="app-header">
-          <Brand compact />
-          <div>
-            <button className="icon-button" type="button" aria-label="Ver avisos">
+          <div className="app-header__mobile-brand">
+            <Brand compact />
+          </div>
+          <div className="app-header__context">
+            <span className="eyebrow">Panel privado</span>
+            <span className="app-header__date">{today}</span>
+          </div>
+          <div className="app-header__account">
+            <a className="icon-button" href="/inicio#pendientes" aria-label="Ver pendientes">
               <Icon name="bell" size={20} />
-            </button>
-            <span className="avatar" aria-label="Cuenta de Cristian Santiago">
+            </a>
+            <span className="avatar" aria-hidden="true">
               CS
+            </span>
+            <span className="account-copy">
+              <strong>Cristian Santiago</strong>
+              <small>Administrador</small>
             </span>
           </div>
         </header>
