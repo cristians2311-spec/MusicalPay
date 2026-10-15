@@ -404,6 +404,147 @@ a {
   box-shadow: 0 0 0 4px rgb(38 112 90 / 12%);
 }
 
+.quote-document-page {
+  display: grid;
+  gap: 20px;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.document-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+}
+
+.quote-document {
+  padding: clamp(28px, 6vw, 70px);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  background: white;
+  box-shadow: var(--shadow-sm);
+}
+
+.quote-document__header,
+.quote-document__header > div,
+.quote-document__options article {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+}
+
+.quote-document__header img {
+  object-fit: contain;
+  border-radius: 14px;
+  background: #111214;
+}
+
+.quote-document h1,
+.quote-document h2,
+.quote-document h3,
+.quote-document p {
+  margin: 0;
+}
+
+.quote-document__header h1 {
+  font-family: var(--font-display);
+  font-size: 2.5rem;
+}
+
+.quote-document__header span,
+.quote-document__intro span,
+.quote-document__facts span,
+.quote-document__options article > div > span {
+  color: var(--accent);
+  font-size: 0.7rem;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.quote-document__intro {
+  margin: 54px 0 34px;
+}
+
+.quote-document__intro h2 {
+  margin-top: 6px;
+  font-family: var(--font-display);
+  font-size: 2rem;
+}
+
+.quote-document__facts {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 22px;
+  padding: 26px 0;
+  border-block: 1px solid var(--line);
+}
+
+.quote-document__facts div {
+  display: grid;
+  gap: 5px;
+}
+
+.quote-document__options,
+.quote-document__conditions {
+  margin-top: 34px;
+}
+
+.quote-document__options > h2,
+.quote-document__conditions h2 {
+  margin-bottom: 16px;
+  font-family: var(--font-display);
+}
+
+.quote-document__options article {
+  flex-wrap: wrap;
+  padding: 22px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+}
+
+.quote-document__options article + article {
+  margin-top: 12px;
+}
+
+.quote-document__options article > p,
+.quote-document__options article > small {
+  width: 100%;
+  color: var(--ink-soft);
+}
+
+.quote-document footer {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 46px;
+  padding-top: 20px;
+  border-top: 1px solid var(--line);
+  color: var(--ink-soft);
+}
+
+@media print {
+  .app-sidebar,
+  .app-header,
+  .bottom-navigation,
+  .document-actions {
+    display: none !important;
+  }
+
+  .app-stage {
+    margin: 0;
+  }
+
+  .app-main {
+    padding: 0;
+  }
+
+  .quote-document {
+    border: 0;
+    box-shadow: none;
+  }
+}
+
 .app-stage {
   min-height: 100dvh;
   margin-left: 236px;
