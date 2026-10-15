@@ -12,7 +12,10 @@ export async function issueQuoteAction(formData: FormData) {
   await requireOwnerContext();
   const supabase = await createClient();
   const { error } = await supabase.rpc("issue_quote", { requested_quote_id: quoteId });
-  if (error) throw new Error("No fue posible emitir la cotización.");
+  if (error) {
+    console.error("issue_quote failed", { code: error.code, message: error.message });
+    redirect(`/cotizaciones/${quoteId}?error=emitir`);
+  }
   revalidatePath(`/cotizaciones/${quoteId}`);
   revalidatePath("/cotizaciones");
   redirect(`/cotizaciones/${quoteId}?emitida=1`);
@@ -29,7 +32,10 @@ export async function acceptQuoteOptionAction(formData: FormData) {
     requested_option_id: optionId,
     requested_quote_id: quoteId,
   });
-  if (error || !eventId) throw new Error("No fue posible aceptar esta opción.");
+  if (error || !eventId) {
+    console.error("accept_quote_option failed", { code: error?.code, message: error?.message });
+    redirect(`/cotizaciones/${quoteId}?error=aceptar`);
+  }
   revalidatePath("/cotizaciones");
   revalidatePath("/eventos");
   redirect(`/eventos/${eventId}`);
