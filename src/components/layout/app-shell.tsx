@@ -1,8 +1,8 @@
 import type { ReactNode } from "react";
 
-import { DesktopNavigation, MobileNavigation } from "@/components/app-navigation";
-import { Brand } from "@/components/brand";
-import { Icon } from "@/components/icon";
+import { Brand } from "@/components/brand/brand";
+import { DesktopNavigation, MobileNavigation } from "@/components/layout/app-navigation";
+import { Icon } from "@/components/ui/icon";
 
 type AppShellProps = {
   children: ReactNode;

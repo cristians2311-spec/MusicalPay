@@ -1,6 +1,6 @@
 import Link from "next/link";
 
-import { Icon } from "@/components/icon";
+import { Icon } from "@/components/ui/icon";
 
 const money = new Intl.NumberFormat("es-CO", {
   style: "currency",

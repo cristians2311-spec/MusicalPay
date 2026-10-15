@@ -1,7 +1,6 @@
-import { toggleClientArchiveAction } from "./actions";
-import { ClientForm } from "./client-form";
-
-import { Icon } from "@/components/icon";
+import { Icon } from "@/components/ui/icon";
+import { toggleClientArchiveAction } from "@/features/clients/actions";
+import { ClientForm } from "@/features/clients/components/client-form";
 import { findOwnerContext } from "@/lib/auth/owner-context";
 import { createClient } from "@/lib/supabase/server";
 

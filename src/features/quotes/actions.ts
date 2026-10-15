@@ -7,7 +7,7 @@ import {
   quoteDraftSchema,
   toBogotaTimestamp,
   toDatabaseQuoteOptions,
-} from "@/domain/quotes";
+} from "@/features/quotes/domain";
 import { requireOwnerContext } from "@/lib/auth/owner-context";
 import { createClient } from "@/lib/supabase/server";
 

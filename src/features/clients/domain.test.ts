@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import { clientSchema, normalizePhone } from "./clients";
+import { clientSchema, normalizePhone } from "./domain";
 
 describe("normalizePhone", () => {
   it("convierte un celular colombiano al formato internacional", () => {

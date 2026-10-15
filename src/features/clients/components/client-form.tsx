@@ -2,7 +2,7 @@
 
 import { useActionState, useEffect, useRef } from "react";
 
-import { createClientAction, type ClientFormState } from "./actions";
+import { createClientAction, type ClientFormState } from "@/features/clients/actions";
 
 const initialClientFormState: ClientFormState = { status: "idle", message: "" };
 

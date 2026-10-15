@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import { formatCop, quoteDraftSchema, toBogotaTimestamp, toDatabaseQuoteOptions } from "./quotes";
+import { formatCop, quoteDraftSchema, toBogotaTimestamp, toDatabaseQuoteOptions } from "./domain";
 
 const validDraft = {
   clientId: "1",

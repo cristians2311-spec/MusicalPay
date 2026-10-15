@@ -2,7 +2,7 @@
 
 import { revalidatePath } from "next/cache";
 
-import { clientSchema, normalizePhone } from "@/domain/clients";
+import { clientSchema, normalizePhone } from "@/features/clients/domain";
 import { requireOwnerContext } from "@/lib/auth/owner-context";
 import { createClient } from "@/lib/supabase/server";
 

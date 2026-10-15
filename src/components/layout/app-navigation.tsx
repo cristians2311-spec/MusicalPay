@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
-import { Icon } from "@/components/icon";
+import { Icon } from "@/components/ui/icon";
 import {
   primaryNavigationItems,
   secondaryNavigationItems,

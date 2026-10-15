@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 
-import { Brand } from "@/components/brand";
-import { LoginForm } from "@/components/login-form";
+import { Brand } from "@/components/brand/brand";
+import { LoginForm } from "@/features/auth/components/login-form";
 import { hasSupabaseConfig } from "@/lib/env";
 
 export const metadata: Metadata = { title: "Iniciar sesión" };

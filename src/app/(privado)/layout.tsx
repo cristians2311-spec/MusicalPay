@@ -1,7 +1,7 @@
 import type { ReactNode } from "react";
 import { redirect } from "next/navigation";
 
-import { AppShell } from "@/components/app-shell";
+import { AppShell } from "@/components/layout/app-shell";
 import { hasSupabaseConfig } from "@/lib/env";
 import { getAuthorizedOwnerEmail } from "@/lib/server-env";
 import { createClient } from "@/lib/supabase/server";

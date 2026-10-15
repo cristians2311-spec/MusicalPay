@@ -1,7 +1,6 @@
 import Link from "next/link";
 
-import { QuoteForm } from "./quote-form";
-
+import { QuoteForm } from "@/features/quotes/components/quote-form";
 import { findOwnerContext } from "@/lib/auth/owner-context";
 import { createClient } from "@/lib/supabase/server";
 

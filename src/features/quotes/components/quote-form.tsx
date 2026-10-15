@@ -3,8 +3,8 @@
 import Link from "next/link";
 import { useActionState, useMemo, useState } from "react";
 
-import { formatCop } from "@/domain/quotes";
-import { createQuoteDraftAction, type QuoteFormState } from "./actions";
+import { createQuoteDraftAction, type QuoteFormState } from "@/features/quotes/actions";
+import { formatCop } from "@/features/quotes/domain";
 
 type ClientOption = { id: number; name: string; phone: string | null };
 type DraftOption = {
