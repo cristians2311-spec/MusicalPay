@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import { formatCop, quoteDraftSchema, toBogotaTimestamp, toDatabaseQuoteOptions } from "./domain";
+import { formatCop, optionalDisplayText, quoteDraftSchema, toBogotaTimestamp, toDatabaseQuoteOptions } from "./domain";
 
 const validDraft = {
   clientId: "1",
@@ -44,5 +44,11 @@ describe("cotizaciones", () => {
 
   it("formatea pesos sin centavos", () => {
     expect(formatCop(1200000)).toContain("1.200.000");
+  });
+
+  it("oculta direcciones vacías o de un solo carácter", () => {
+    expect(optionalDisplayText(null)).toBeNull();
+    expect(optionalDisplayText(" . ")).toBeNull();
+    expect(optionalDisplayText(" Calle 10 ")).toBe("Calle 10");
   });
 });

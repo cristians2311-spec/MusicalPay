@@ -413,8 +413,13 @@ a {
 
 .document-actions {
   display: flex;
+  flex-wrap: wrap;
   justify-content: flex-end;
   gap: 12px;
+}
+
+.document-actions .action-message {
+  width: 100%;
 }
 
 .quote-document {

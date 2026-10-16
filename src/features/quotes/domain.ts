@@ -41,6 +41,11 @@ export function formatCop(value: number | string) {
   }).format(amount);
 }
 
+export function optionalDisplayText(value: string | null | undefined) {
+  const text = value?.trim();
+  return text && text.length > 1 ? text : null;
+}
+
 export function toDatabaseQuoteOptions(options: QuoteDraft["options"]) {
   return options.map((option) => ({
     name: option.name,
