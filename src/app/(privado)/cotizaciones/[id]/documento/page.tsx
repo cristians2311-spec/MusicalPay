@@ -2,7 +2,7 @@ import Image from "next/image";
 import { notFound } from "next/navigation";
 
 import { DocumentActions } from "@/features/quotes/components/document-actions";
-import { formatCop, optionalDisplayText } from "@/features/quotes/domain";
+import { formatCop, getQuotePresentationLabels, optionalDisplayText } from "@/features/quotes/domain";
 import { requireOwnerContext } from "@/lib/auth/owner-context";
 import { createClient } from "@/lib/supabase/server";
 
@@ -21,6 +21,8 @@ export default async function QuoteDocumentPage({ params }: { params: Promise<{ 
   const { data: options } = await supabase.from("quote_options").select("id,option_number,name,price_cop,half_tanda_units,break_minutes,required_advance_cop,customer_conditions").eq("revision_id", revision.id).eq("band_id", owner.bandId).order("option_number");
   const documentTitle = `Cotización COT-${String(quote.quote_number).padStart(6, "0")}`;
   const address = optionalDisplayText(revision.address);
+  const quoteOptions = options ?? [];
+  const presentation = getQuotePresentationLabels(quoteOptions.length);
   const dateFormat = new Intl.DateTimeFormat("es-CO", { dateStyle: "long", timeZone: "America/Bogota" });
   return (
     <div className="quote-document-page">
@@ -28,8 +30,8 @@ export default async function QuoteDocumentPage({ params }: { params: Promise<{ 
       <article className="quote-document">
         <header className="quote-document__header"><div><Image alt="Cristian Santiago Music" height={86} src="/brand/cristian-santiago-music.png" width={86} /><div><span>Cristian Santiago Music</span><h1>Cotización</h1></div></div><strong>COT-{String(quote.quote_number).padStart(6, "0")}</strong></header>
         <section className="quote-document__intro"><span>Preparada para</span><h2>{client?.name ?? "Cliente"}</h2>{client?.phone ? <p>{client.phone}</p> : null}</section>
-        <section className="quote-document__facts"><div><span>Evento</span><strong>{revision.occasion}</strong></div><div><span>Fecha</span><strong>{dateFormat.format(new Date(`${revision.event_date}T12:00:00`))}</strong></div><div><span>Hora</span><strong>{revision.starts_at ? new Intl.DateTimeFormat("es-CO", { hour: "numeric", minute: "2-digit", hour12: true, timeZone: "America/Bogota" }).format(new Date(revision.starts_at)) : "Por acordar"}</strong></div><div><span>Lugar</span><strong>{revision.venue}{address ? ` · ${address}` : ""}</strong></div></section>
-        <section className="quote-document__options"><h2>Opciones</h2>{(options ?? []).map((option) => <article key={option.id}><div><span>Opción {option.option_number}</span><h3>{option.name}</h3><p>{option.half_tanda_units / 2} tanda(s) · {option.break_minutes} min de descanso</p></div><strong>{formatCop(option.price_cop)}</strong>{option.required_advance_cop ? <small>Anticipo: {formatCop(option.required_advance_cop)}</small> : <small>Sin anticipo obligatorio</small>}{option.customer_conditions ? <p>{option.customer_conditions}</p> : null}</article>)}</section>
+        <section className="quote-document__facts"><div className="quote-document__fact--primary"><span>Fecha</span><strong>{dateFormat.format(new Date(`${revision.event_date}T12:00:00`))}</strong></div><div><span>Evento</span><strong>{revision.occasion}</strong></div><div><span>Hora</span><strong>{revision.starts_at ? new Intl.DateTimeFormat("es-CO", { hour: "numeric", minute: "2-digit", hour12: true, timeZone: "America/Bogota" }).format(new Date(revision.starts_at)) : "Por acordar"}</strong></div><div><span>Lugar</span><strong>{revision.venue}{address ? ` · ${address}` : ""}</strong></div></section>
+        <section className={`quote-document__options${presentation.showOptionNumber ? "" : " quote-document__options--single"}`}><h2>{presentation.sectionTitle}</h2>{quoteOptions.map((option) => <article key={option.id}><div className="quote-document__option-copy">{presentation.showOptionNumber ? <span>Opción {option.option_number}</span> : null}<h3>{option.name}</h3><p>{option.half_tanda_units / 2} tanda(s) · {option.break_minutes} min de descanso</p></div><div className="quote-document__price"><span>Valor total</span><strong>{formatCop(option.price_cop)}</strong><small>{option.required_advance_cop ? `Anticipo: ${formatCop(option.required_advance_cop)}` : "Sin anticipo obligatorio"}</small></div>{option.customer_conditions ? <p className="quote-document__option-conditions">{option.customer_conditions}</p> : null}</article>)}</section>
         {revision.general_conditions ? <section className="quote-document__conditions"><h2>Condiciones</h2><p>{revision.general_conditions}</p></section> : null}
         <footer><p>Válida hasta el {revision.expires_on ? dateFormat.format(new Date(`${revision.expires_on}T12:00:00`)) : `${revision.validity_days} días`}.</p><strong>Cristian Santiago Music</strong></footer>
       </article>

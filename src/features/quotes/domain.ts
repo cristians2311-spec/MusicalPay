@@ -46,6 +46,14 @@ export function optionalDisplayText(value: string | null | undefined) {
   return text && text.length > 1 ? text : null;
 }
 
+export function getQuotePresentationLabels(optionCount: number) {
+  const hasMultipleOptions = optionCount > 1;
+  return {
+    sectionTitle: hasMultipleOptions ? "Opciones" : "Propuesta",
+    showOptionNumber: hasMultipleOptions,
+  };
+}
+
 export function toDatabaseQuoteOptions(options: QuoteDraft["options"]) {
   return options.map((option) => ({
     name: option.name,

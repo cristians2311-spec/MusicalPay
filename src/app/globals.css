@@ -407,7 +407,7 @@ a {
 .quote-document-page {
   display: grid;
   gap: 20px;
-  max-width: 900px;
+  max-width: 980px;
   margin: 0 auto;
 }
 
@@ -423,20 +423,30 @@ a {
 }
 
 .quote-document {
-  padding: clamp(28px, 6vw, 70px);
+  padding: clamp(32px, 6vw, 68px);
   border: 1px solid var(--line);
   border-radius: var(--radius-md);
-  background: white;
+  background:
+    linear-gradient(145deg, rgb(166 99 35 / 4%), transparent 28%),
+    white;
   box-shadow: var(--shadow-sm);
 }
 
 .quote-document__header,
-.quote-document__header > div,
-.quote-document__options article {
+.quote-document__header > div {
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 18px;
+}
+
+.quote-document__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  padding-bottom: 26px;
+  border-bottom: 1px solid var(--line);
 }
 
 .quote-document__header img {
@@ -454,7 +464,8 @@ a {
 
 .quote-document__header h1 {
   font-family: var(--font-display);
-  font-size: 2.5rem;
+  font-size: clamp(2.5rem, 5vw, 3.35rem);
+  line-height: 0.95;
 }
 
 .quote-document__header span,
@@ -469,26 +480,53 @@ a {
 }
 
 .quote-document__intro {
-  margin: 54px 0 34px;
+  margin: 42px 0 30px;
 }
 
 .quote-document__intro h2 {
   margin-top: 6px;
   font-family: var(--font-display);
-  font-size: 2rem;
+  font-size: clamp(2rem, 4vw, 2.65rem);
+  line-height: 1.05;
 }
 
 .quote-document__facts {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 22px;
-  padding: 26px 0;
+  gap: 10px;
+  padding: 12px;
   border-block: 1px solid var(--line);
+  border-radius: 16px;
+  background: var(--surface-soft);
 }
 
 .quote-document__facts div {
   display: grid;
-  gap: 5px;
+  gap: 7px;
+  min-height: 82px;
+  align-content: center;
+  padding: 14px 16px;
+  border-radius: 12px;
+  background: rgb(255 255 255 / 78%);
+}
+
+.quote-document__facts strong {
+  font-size: 1.06rem;
+  line-height: 1.3;
+}
+
+.quote-document__facts .quote-document__fact--primary {
+  background: var(--ink);
+  color: white;
+}
+
+.quote-document__facts .quote-document__fact--primary span {
+  color: var(--accent-soft);
+}
+
+.quote-document__facts .quote-document__fact--primary strong {
+  font-family: var(--font-display);
+  font-size: clamp(1.35rem, 3vw, 1.8rem);
 }
 
 .quote-document__options,
@@ -498,25 +536,80 @@ a {
 
 .quote-document__options > h2,
 .quote-document__conditions h2 {
-  margin-bottom: 16px;
+  margin-bottom: 18px;
   font-family: var(--font-display);
+  font-size: clamp(1.75rem, 3.5vw, 2.25rem);
 }
 
 .quote-document__options article {
-  flex-wrap: wrap;
-  padding: 22px;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 18px 28px;
+  align-items: center;
+  padding: 24px 26px;
   border: 1px solid var(--line);
   border-radius: var(--radius-sm);
+  background: white;
+  box-shadow: 0 12px 30px rgb(36 29 20 / 5%);
 }
 
 .quote-document__options article + article {
   margin-top: 12px;
 }
 
-.quote-document__options article > p,
-.quote-document__options article > small {
-  width: 100%;
+.quote-document__option-copy {
+  display: grid;
+  gap: 7px;
+}
+
+.quote-document__option-copy h3 {
+  font-family: var(--font-display);
+  font-size: 1.45rem;
+}
+
+.quote-document__option-copy p,
+.quote-document__price small,
+.quote-document__option-conditions {
   color: var(--ink-soft);
+}
+
+.quote-document__price {
+  display: grid;
+  gap: 3px;
+  min-width: 190px;
+  justify-items: end;
+  text-align: right;
+}
+
+.quote-document__price > span {
+  color: var(--accent);
+  font-size: 0.68rem;
+  font-weight: 800;
+  letter-spacing: 0.11em;
+  text-transform: uppercase;
+}
+
+.quote-document__price strong {
+  font-family: var(--font-display);
+  font-size: clamp(1.9rem, 4vw, 2.65rem);
+  line-height: 1;
+}
+
+.quote-document__option-conditions {
+  grid-column: 1 / -1;
+  padding-top: 16px;
+  border-top: 1px solid var(--line);
+  line-height: 1.6;
+}
+
+.quote-document__options--single article {
+  min-height: 170px;
+  padding: 30px;
+  border-left: 5px solid var(--accent);
+}
+
+.quote-document__options--single .quote-document__option-copy h3 {
+  font-size: clamp(1.65rem, 4vw, 2.25rem);
 }
 
 .quote-document footer {
@@ -1606,6 +1699,97 @@ a {
 
   .quote-row > .text-link {
     grid-column: 2;
+  }
+
+  .document-actions {
+    display: grid;
+    grid-template-columns: auto 1fr 1fr;
+    gap: 8px;
+  }
+
+  .document-actions .primary-button,
+  .document-actions .secondary-button {
+    min-height: 48px;
+    padding-inline: 12px;
+  }
+
+  .document-actions .action-message {
+    grid-column: 1 / -1;
+  }
+
+  .quote-document {
+    padding: 26px 18px 32px;
+    border-radius: 20px;
+  }
+
+  .quote-document__header {
+    align-items: flex-start;
+    gap: 14px;
+    padding-bottom: 20px;
+  }
+
+  .quote-document__header > div {
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  .quote-document__header img {
+    width: 64px;
+    height: 64px;
+  }
+
+  .quote-document__header h1 {
+    margin-top: 4px;
+    font-size: 2.25rem;
+  }
+
+  .quote-document__header > strong {
+    padding-top: 4px;
+    font-size: 0.78rem;
+    white-space: nowrap;
+  }
+
+  .quote-document__intro {
+    margin: 30px 0 24px;
+  }
+
+  .quote-document__facts {
+    grid-template-columns: 1fr;
+  }
+
+  .quote-document__facts div {
+    min-height: 72px;
+  }
+
+  .quote-document__options,
+  .quote-document__conditions {
+    margin-top: 28px;
+  }
+
+  .quote-document__options article,
+  .quote-document__options--single article {
+    grid-template-columns: 1fr;
+    gap: 20px;
+    min-height: 0;
+    padding: 22px;
+  }
+
+  .quote-document__price {
+    min-width: 0;
+    justify-items: start;
+    padding-top: 18px;
+    border-top: 1px solid var(--line);
+    text-align: left;
+  }
+
+  .quote-document__price strong {
+    font-size: 2.4rem;
+  }
+
+  .quote-document footer {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 10px;
   }
 }
 

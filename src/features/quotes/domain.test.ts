@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import { formatCop, optionalDisplayText, quoteDraftSchema, toBogotaTimestamp, toDatabaseQuoteOptions } from "./domain";
+import { formatCop, getQuotePresentationLabels, optionalDisplayText, quoteDraftSchema, toBogotaTimestamp, toDatabaseQuoteOptions } from "./domain";
 
 const validDraft = {
   clientId: "1",
@@ -50,5 +50,13 @@ describe("cotizaciones", () => {
     expect(optionalDisplayText(null)).toBeNull();
     expect(optionalDisplayText(" . ")).toBeNull();
     expect(optionalDisplayText(" Calle 10 ")).toBe("Calle 10");
+  });
+
+  it("presenta una sola alternativa como propuesta sin numerarla", () => {
+    expect(getQuotePresentationLabels(1)).toEqual({ sectionTitle: "Propuesta", showOptionNumber: false });
+  });
+
+  it("presenta varias alternativas como opciones numeradas", () => {
+    expect(getQuotePresentationLabels(2)).toEqual({ sectionTitle: "Opciones", showOptionNumber: true });
   });
 });
